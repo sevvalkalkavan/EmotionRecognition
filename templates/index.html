@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Say and Show Your Emotion</title>
+</head>
+<body>
+    <h1>Say and Show Your Emotion</h1>
+    <div>
+        <button id="cameraBtn">Camera</button>
+        <button id="audioBtn">Audio</button>
+    </div>
+    <div id="cameraSection">
+        <img id="videoElement" src="{{ url_for('video_feed') }}" width="640" height="480">
+    </div>
+    <div id="audioSection" style="display:none;">
+        <button id="recordAudioBtn">Record Voice and Guess</button>
+    </div>
+    <button id="startBtn">Show Random Emotion</button>
+    <h2 id="emotionDisplay"></h2>
+    <h2 id="resultDisplay"></h2>
+
+    <script>
+        let targetEmotion = null;
+
+        document.getElementById('cameraBtn').addEventListener('click', function() {
+            document.getElementById('cameraSection').style.display = 'block';
+            document.getElementById('audioSection').style.display = 'none';
+            // Clear audio results
+            document.getElementById('emotionDisplay').innerText = '';
+            document.getElementById('resultDisplay').innerText = '';
+        });
+
+        document.getElementById('audioBtn').addEventListener('click', function() {
+            document.getElementById('cameraSection').style.display = 'none';
+            document.getElementById('audioSection').style.display = 'block';
+        });
+
+        document.getElementById('startBtn').addEventListener('click', function() {
+            fetch('/get_random_emotion')
+                .then(response => response.json())
+                .then(data => {
+                    targetEmotion = data.emotion;
+                    document.getElementById('emotionDisplay').innerText = data.emotion;
+                });
+        });
+
+        document.getElementById('recordAudioBtn').addEventListener('click', function() {
+            // Clear previous results
+            document.getElementById('resultDisplay').innerText = '';
+
+            fetch('/predict_audio_emotion')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('emotionDisplay').innerText = `Tahmin Edilen Duygu: ${data.emotion} `;
+                    document.getElementById('resultDisplay').innerText = data.result;
+                });
+        });
+    </script>
+</body>
+</html>
