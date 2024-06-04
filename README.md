@@ -1,0 +1,3 @@
+On the opened website, users are presented with options for camera and audio. Users who wish to continue with the camera option can click the 'show random emotion' button to display random emotion labels. Face detection is performed using the user's camera feed. If the user shows the correct emotion with more than 85% accuracy, the word 'DONE' is displayed on the screen.
+Users who wish to continue with the audio option will generate a random emotion value. Recording starts and lasts for 5 seconds. If the correct emotion is detected, the word 'DONE' is displayed on the screen. 
+Run the command flask run --host=0.0.0.0 --port=8000.
